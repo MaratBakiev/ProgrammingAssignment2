@@ -1,7 +1,8 @@
-## Put comments here that give an overall description of what your
-## functions do
+## This pair of functions allows avoid computing the inverse of the matrix
+## if it was already computed and the matrix hasn`t been changed
 
-## Write a short comment describing this function
+## This function is responsible for caching computed inverse matrix and
+## for providing its value when necessary
 
 makeCacheMatrix <- function(x = matrix()) {
         m <- NULL
@@ -10,24 +11,25 @@ makeCacheMatrix <- function(x = matrix()) {
                 m <<- NULL
         }
         get <- function() x
-        setmean <- function(mean) m <<- mean
-        getmean <- function() m
+        setinverse <- function(inverse) m <<- inverse
+        getinverse <- function() m
         list(set = set, get = get,
-             setmean = setmean,
-             getmean = getmean)
+             setinverse = setinverse,
+             getinverse = getinverse)
 }
 
 
-## Write a short comment describing this function
+## This function computes the inverse matrix or just takes it from the cache
+## if it was already computed and hasn`t been changed
 
 cacheSolve <- function(x, ...) {
-        m <- x$getmean()
+        m <- x$getinverse()
         if(!is.null(m)) {
                 message("getting cached data")
                 return(m)
         }
         data <- x$get()
         m <- solve(data, ...)
-        x$setmean(m)
+        x$setinverse(m)
         m
 }
